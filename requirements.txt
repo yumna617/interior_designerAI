@@ -42,7 +42,7 @@ ml_dtypes==0.5.1
 mpmath==1.3.0
 namex==0.0.9
 networkx==3.4.2
-numpy==2.1.3
+numpy>=1.22.0 
 opencv-python==4.11.0.86
 opt_einsum==3.4.0
 optree==0.15.0
