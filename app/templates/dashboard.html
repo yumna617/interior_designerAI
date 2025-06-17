@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Interior AI{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1>Welcome, {{ current_user.username }}!</h1>
+        <p class="lead">Your interior design assistant.</p>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Design Analyzer</h5>
+                <p class="card-text">Upload a room photo and get AI-powered design suggestions.</p>
+                <a href="{{ url_for('design_analyzer') }}" class="btn btn-primary">Try Now</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">My Projects</h5>
+                <p class="card-text">View and manage your saved design projects.</p>
+                <a href="#" class="btn btn-secondary">Coming Soon</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Inspiration</h5>
+                <p class="card-text">Browse trending interior design ideas.</p>
+                <a href="#" class="btn btn-secondary">Explore</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

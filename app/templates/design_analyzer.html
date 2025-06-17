@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Design Analyzer - Interior AI{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1>Design Analyzer</h1>
+        <p class="lead">Upload a room photo to get AI-powered design suggestions.</p>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Upload Image</h5>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <input class="form-control" type="file" id="roomImage" accept="image/*" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="roomType" class="form-label">Room Type</label>
+                        <select class="form-select" id="roomType">
+                            <option value="living">Living Room</option>
+                            <option value="bedroom">Bedroom</option>
+                            <option value="kitchen">Kitchen</option>
+                            <option value="bathroom">Bathroom</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Analyze Design</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Results</h5>
+                <div id="resultsContainer" class="text-center py-4">
+                    <p class="text-muted">Your analysis will appear here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("image", document.getElementById("roomImage").files[0]);
+        formData.append("room_type", document.getElementById("roomType").value);
+
+        const resultsDiv = document.getElementById("resultsContainer");
+        resultsDiv.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+
+        try {
+            const response = await fetch("/analyze_design", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            resultsDiv.innerHTML = `
+                <h4>Design Suggestions</h4>
+                <p>${data.suggestions}</p>
+                <div class="mt-3">
+                    <h5>Recommended Colors</h5>
+                    <div class="d-flex justify-content-center gap-2">
+                        ${data.colors.map(color => `
+                            <div style="width: 50px; height: 50px; background-color: ${color}; border: 1px solid #ddd;"></div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        } catch (error) {
+            resultsDiv.innerHTML = `<p class="text-danger">Error: ${error.message}</p>`;
+        }
+    });
+</script>
+{% endblock %}
